@@ -5,7 +5,7 @@ import sys
 #Hacemos que la simulación empiece un lunes y ya se tiene los stock disponibles
 #Simulamos por cant. de semanas
 #Simulamos 522 semanas (aprox. 10 años)
-def simulate(var_control_1, var_control_2):
+def simular(var_control_1, var_control_2):
     CANT_SEMANAS = 522
     PRECIO_VENTA_1 = 123
     PRECIO_VENTA_2 = 123
