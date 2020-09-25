@@ -1,1 +1,1 @@
-# Simulacion_TP-6
+Alta simulación con metodología evento a evento - sistema de almacenamiento intermedio
