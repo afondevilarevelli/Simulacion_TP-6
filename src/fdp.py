@@ -3,6 +3,11 @@
 def get_intervalo_ventas():
     return 300
 
+def get_cant_a_vender_prod(prod):
+    if prod == 0:
+        return get_cant_a_vender_prod_1()
+    return get_cant_a_vender_prod_2()
+
 def get_cant_a_vender_prod_1():
     return 1
 
