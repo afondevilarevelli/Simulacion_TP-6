@@ -26,6 +26,9 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
 
     sumatoria_stock_sobrante_1 = 0
     sumatoria_stock_sobrante_2 = 0
+
+    pedidos_totales = 0
+    pedidos_insatisfechos = 0
     print('Simulating...')
 
     while(tiempo < tiempo_final):
@@ -44,6 +47,7 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
             tiempo = tiempo_prox_venta
             tiempo_prox_venta = tiempo + get_intervalo_ventas()
             r = random()
+            pedidos_totales += 1
             if(r <= 0.6): #Tiré una prob. fruta
                 #Venta de producto 1
                 cant_a_vender = get_cant_a_vender_prod_1()
@@ -55,6 +59,7 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
                     #No hay stock
                     #Si no hay stock suficiente suponemos que se cancela toda la venta (podría venderse el stock disponible - ¡VER!)
                     sumatoria_costo_oportunidad += cant_a_vender*PRECIO_VENTA_1
+                    pedidos_insatisfechos += 1
             else:
                 #Venta de producto 2
                 cant_a_vender = get_cant_a_vender_prod_2()
@@ -66,13 +71,15 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
                     #No hay stock
                     #Si no hay stock suficiente suponemos que se cancela toda la venta (podría venderse el stock disponible - ¡VER!)
                     sumatoria_costo_oportunidad += cant_a_vender*PRECIO_VENTA_2
+                    pedidos_insatisfechos += 1
 
     #Retornar un hash/objecto/'loquesea' de resultados
     return {
         'ganancia': ganancia,
         'costo_oportunidad_promedio': int(sumatoria_costo_oportunidad / CANT_SEMANAS),
         'promedio_stock_sobrante_1' : sumatoria_stock_sobrante_1 / compras_realizadas,
-        'promedio_stock_sobrante_2' : sumatoria_stock_sobrante_2 / compras_realizadas
+        'promedio_stock_sobrante_2' : sumatoria_stock_sobrante_2 / compras_realizadas,
+        'porcentaje_insatisfechos' : 100 * pedidos_insatisfechos / pedidos_totales
     }
     
 def __from_semanas_to_minutos(cant_semanas):
