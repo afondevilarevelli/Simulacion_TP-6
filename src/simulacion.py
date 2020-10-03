@@ -90,6 +90,8 @@ def simular(cantidades_compra_semanal, frecuencia_compra_dias):
 
     #Retornar un hash/objecto/'loquesea' de resultados
     return {
+        'cantidades_compra_semanal' : cantidades_compra_semanal,
+        'frecuencia_compra_dias' : frecuencia_compra_dias,
         'ganancia': ganancia,
         'costo_oportunidad_promedio': int(sumatoria_costo_oportunidad / CANT_SEMANAS),
         'promedio_stock_sobrante' : promedio_stock_sobrante,
