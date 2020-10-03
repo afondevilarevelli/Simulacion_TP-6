@@ -5,7 +5,7 @@ import sys
 #Hacemos que la simulación empiece un lunes y ya se tiene los stock disponibles
 #Simulamos por cant. de semanas
 #Simulamos 522 semanas (aprox. 10 años)
-def simular(var_control_1, var_control_2):
+def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
     CANT_SEMANAS = 522
     PRECIO_VENTA_1 = 123
     PRECIO_VENTA_2 = 123
@@ -15,9 +15,9 @@ def simular(var_control_1, var_control_2):
     #Variables para calcular resultados
     sumatoria_costo_oportunidad = 0
     #Inicio las variables
-    stock_1 = var_control_1
-    stock_2 = var_control_2
-    ganancia = - var_control_1*PRECIO_COMPRA_1 - var_control_2*PRECIO_COMPRA_2 #Simulo una compra hecha al proveedor al principio de la simulación (y de la 1er semana)
+    stock_1 = compra_semanal_1
+    stock_2 = compra_semanal_2
+    ganancia = - compra_semanal_2*PRECIO_COMPRA_1 - compra_semanal_2*PRECIO_COMPRA_2 #Simulo una compra hecha al proveedor al principio de la simulación (y de la 1er semana)
     tiempo = 0
     tiempo_final = __from_semanas_to_minutos(CANT_SEMANAS)
     tiempo_prox_venta = tiempo + get_intervalo_ventas()
@@ -28,10 +28,10 @@ def simular(var_control_1, var_control_2):
         if(tiempo_prox_compra <= tiempo_prox_venta):
             #Compra a proveedor
             tiempo = tiempo_prox_compra
-            tiempo_prox_compra = tiempo + __from_semanas_to_minutos(1)
-            stock_1 += var_control_1
-            stock_2 += var_control_2
-            ganancia -= var_control_1*PRECIO_COMPRA_1 + var_control_2*PRECIO_COMPRA_2
+            tiempo_prox_compra = tiempo + (frecuencia_compra_dias * 24 * 60)
+            stock_1 += compra_semanal_1
+            stock_2 += compra_semanal_2
+            ganancia -= compra_semanal_1*PRECIO_COMPRA_1 + compra_semanal_2*PRECIO_COMPRA_2
         else:
             #venta de un producto a un cliente
             tiempo = tiempo_prox_venta
