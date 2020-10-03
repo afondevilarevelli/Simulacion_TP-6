@@ -22,6 +22,10 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
     tiempo_final = __from_semanas_to_minutos(CANT_SEMANAS)
     tiempo_prox_venta = tiempo + get_intervalo_ventas()
     tiempo_prox_compra = tiempo + __from_semanas_to_minutos(1)
+    compras_realizadas = 1 #La compra simulada
+
+    sumatoria_stock_sobrante_1 = 0
+    sumatoria_stock_sobrante_2 = 0
     print('Simulating...')
 
     while(tiempo < tiempo_final):
@@ -29,8 +33,11 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
             #Compra a proveedor
             tiempo = tiempo_prox_compra
             tiempo_prox_compra = tiempo + (frecuencia_compra_dias * 24 * 60)
+            sumatoria_stock_sobrante_1 += stock_1
+            sumatoria_stock_sobrante_2 += stock_2
             stock_1 += compra_semanal_1
             stock_2 += compra_semanal_2
+            compras_realizadas += 1
             ganancia -= compra_semanal_1*PRECIO_COMPRA_1 + compra_semanal_2*PRECIO_COMPRA_2
         else:
             #venta de un producto a un cliente
@@ -63,7 +70,9 @@ def simular(compra_semanal_1, compra_semanal_2, frecuencia_compra_dias):
     #Retornar un hash/objecto/'loquesea' de resultados
     return {
         'ganancia': ganancia,
-        'costo_oportunidad_promedio': int(sumatoria_costo_oportunidad / CANT_SEMANAS)
+        'costo_oportunidad_promedio': int(sumatoria_costo_oportunidad / CANT_SEMANAS),
+        'promedio_stock_sobrante_1' : sumatoria_stock_sobrante_1 / compras_realizadas,
+        'promedio_stock_sobrante_2' : sumatoria_stock_sobrante_2 / compras_realizadas
     }
     
 def __from_semanas_to_minutos(cant_semanas):
