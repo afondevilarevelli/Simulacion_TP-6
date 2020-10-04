@@ -2,6 +2,9 @@ from fdp import *
 from random import random
 import sys
 
+def ft(t, tf, text):
+    return "[" + str(t) + " / " + str(tf) + "] :: " + text
+
 #Hacemos que la simulación empiece un lunes y ya se tiene los stock disponibles
 #Simulamos por cant. de semanas
 #Simulamos 522 semanas (aprox. 10 años)
@@ -46,24 +49,30 @@ def simular(cantidades_compra_semanal, frecuencia_compra_dias):
     pedidos_totales = 0
     pedidos_insatisfechos = 0
 
-    print('Simulating...')
+    print(ft(tiempo, tiempo_final, "Simulating..."))
 
     while(tiempo < tiempo_final):
         if(tiempo_prox_compra <= tiempo_prox_venta):
             #Compra a proveedor
+            print(ft(tiempo, tiempo_final, "Purchasing stock..."))
+
             tiempo = tiempo_prox_compra
             tiempo_prox_compra = tiempo + (frecuencia_compra_dias * 24 * 60)
+            print(ft(tiempo, tiempo_final, "Next purchase on " + str(tiempo_prox_compra)))
 
             for i in range(len(productos)):
                 sumatoria_stock_sobrante[i] += stock_actual[i]
                 stock_actual[i] += cantidades_compra_semanal[i]
                 ganancia -= cantidades_compra_semanal[i]*productos[i]['precio_compra']
+                print(ft(tiempo, tiempo_final, "Added " + str(cantidades_compra_semanal[i]) + " stock of product " + str(i)))
 
             compras_realizadas += 1
         else:
             #venta de un producto a un cliente
+            print(ft(tiempo, tiempo_final, "Selling products"))
             tiempo = tiempo_prox_venta
             tiempo_prox_venta = tiempo + get_intervalo_ventas()
+            print(ft(tiempo, tiempo_final, "Next client on " + str(tiempo_prox_venta)))
             r = random()
             pedidos_totales += 1
 
@@ -76,6 +85,7 @@ def simular(cantidades_compra_semanal, frecuencia_compra_dias):
                     #Hay stock
                     stock_actual[i] -= cant_a_vender
                     ganancia += cant_a_vender*productos[i]['precio_venta']
+                    print(ft(tiempo, tiempo_final, "Sold " + str(cant_a_vender) + " of product " + str(i)))
                 else:
                     #No hay stock
                     #Si no hay stock suficiente suponemos que se cancela toda la venta (podría venderse el stock disponible - ¡VER!)
@@ -83,6 +93,7 @@ def simular(cantidades_compra_semanal, frecuencia_compra_dias):
                     if not estuvo_insatisfecho:
                         pedidos_insatisfechos += 1
                     estuvo_insatisfecho = True
+                    print(ft(tiempo, tiempo_final, "Could not sell " + str(cant_a_vender) + " of product " + str(i)))
 
     promedio_stock_sobrante = [0] * len(productos)
     for i in range(len(sumatoria_stock_sobrante)):
